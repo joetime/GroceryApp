@@ -28,7 +28,7 @@ const styles = require('./styles.js');
 // (1) import firebase
 import * as firebase from 'firebase';
 // (2) set configuration
-const firebaseConfig = {
+const firebaseConfigGroceries = {
   apiKey: "AIzaSyAcpBKbIvsOBEU9IWi20HiZcJ8O9D405jw",
   authDomain: "groceryapp-2333f.firebaseapp.com",
   databaseURL: "https://groceryapp-2333f.firebaseio.com",
@@ -36,11 +36,17 @@ const firebaseConfig = {
   storageBucket: "groceryapp-2333f.appspot.com",
   messagingSenderId: "620723234214"
 };
+const firebaseConfigKbook = {
+  apiKey: "AIzaSyCQzUnyLAzfRwLHctj2RqCfSDqfpO9pXdE",
+  authDomain: "kbook2-1ce98.firebaseapp.com",
+  databaseURL: "https://kbook2-1ce98.firebaseio.com",
+  projectId: "kbook2-1ce98",
+  storageBucket: "kbook2-1ce98.appspot.com",
+  messagingSenderId: "101241005137"
+};
+//firebase.initializeApp(firebaseConfigKbook);
 // (3) instance of firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-
-
+const firebaseApp = firebase.initializeApp(firebaseConfigKbook);
 
 // The App
 export default class GroceryApp extends Component {
@@ -53,7 +59,7 @@ export default class GroceryApp extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2
       })
     }
-    this.itemsRef = firebaseApp.database().ref();
+    this.itemsRef = firebaseApp.database().ref('artists');
   }
 
   // (5) when data changes, get a snapshot
@@ -64,8 +70,12 @@ export default class GroceryApp extends Component {
       // get children as an array
       var items = [];
       snap.forEach((child) => {
+
+        console.log('snap.child.val()', child.val())
+
         items.push({
-          title: child.val().title,
+          name: child.val(),
+          //songs: child.val().songs,
           _key: child.key
         });
       });
@@ -73,6 +83,7 @@ export default class GroceryApp extends Component {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(items)
       });
+
       var d = JSON.stringify(items);
       console.log('items', d);
 
@@ -136,8 +147,10 @@ export default class GroceryApp extends Component {
     return (
       <View style={styles.container}>
         <StatusBar title="Grocery List" />
+
         <ListView dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)} style={styles.listview} />
+
         <ActionButton title="Add" onPress={this._addItem.bind(this)} />
         <ActionButton title="Test Storage" onPress={this._testStorage.bind(this)} />
       </View>
