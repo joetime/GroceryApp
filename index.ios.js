@@ -12,6 +12,7 @@ import {
   View,
   ListView,
   AlertIOS,
+  TabBarIOS,
   AsyncStorage
 } from 'react-native';
 
