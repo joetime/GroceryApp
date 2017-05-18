@@ -10,7 +10,7 @@ class ListItem extends Component {
         super(props);
         this.state = {
             dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2
+                rowHasChanged: (row1, row2) => row1 !== row2 && row1.songs !== row2.songs
             })
         }
         //this.itemsRef = firebaseApp.database().ref('artistSongs');
@@ -20,16 +20,15 @@ class ListItem extends Component {
 
     render() {
         return (
-            <TouchableHighlight onPress={this.props.onPress}>
                 <View style={styles.li}>
-                    <Text style={styles.liText}>{this.props.item.name} ({this.props.item.songs.length})</Text>
-                    {/*<Text style={styles.liText}>{this.props.item.songs.length}</Text>*/}
+                    <Text style={styles.artistName}>{this.props.item.name} ({this.props.item.songs.length})</Text>
                     <View>
                         <ListView dataSource={this.s}
-                            renderRow={(rowData) => <Text>{rowData.title}</Text>} />
+                            renderRow={(rowData) => 
+                                <TouchableHighlight onPress={this.props.onSongPress}><Text style={styles.songTitle}>{rowData.title}</Text></TouchableHighlight>
+                                } />
                     </View>
                 </View>
-            </TouchableHighlight>
         );
     }
 }

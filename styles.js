@@ -5,12 +5,24 @@ const constants = {
 };
 
 var styles = StyleSheet.create({
+    
     container: {
         backgroundColor: '#f2f2f2',
         flex: 1,
     },
     listview: {
+        //flexDirection: 'row',
         flex: 1,
+    },
+    liFlex: {
+        backgroundColor: '#fff',
+        borderBottomColor: '#eee',
+        borderColor: 'transparent',
+        borderWidth: 1,
+        paddingLeft: 16,
+        paddingTop: 14,
+        paddingBottom: 16,
+        flex: 1
     },
     li: {
         backgroundColor: '#fff',
@@ -33,6 +45,20 @@ var styles = StyleSheet.create({
         fontSize: 16,
         flex: 1
     },
+    artistName: {
+        color: '#333',
+        fontSize: 20,
+        flex: .5,
+        fontWeight: 'bold'
+    },
+    songTitle: {
+        color: '#338',
+        fontSize: 18,
+        paddingTop: 8,
+        paddingLeft: 8
+        
+    },
+
     navbar: {
         alignItems: 'center',
         backgroundColor: '#fff',

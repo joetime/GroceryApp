@@ -183,10 +183,10 @@ export default class GroceryApp extends Component {
     return (
       <View style={styles.container}>
         <StatusBar title="Kbook" />
-        <View style={{ flexDirection: 'row', flex: 2 }}>
-          <ListView dataSource={this.state.dataSource}
-            renderRow={this._renderItem.bind(this)} style={styles.listview} />
-        </View>
+
+        <ListView dataSource={this.state.dataSource}
+          renderRow={this._renderItem.bind(this)} style={styles.listview} />
+
         <ActionButton title="Add" onPress={this._addItem.bind(this)} />
         <ActionButton title="Test Storage" onPress={this._testStorage.bind(this)} />
       </View>
