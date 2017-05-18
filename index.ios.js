@@ -62,6 +62,19 @@ export default class GroceryApp extends Component {
     this.itemsRef = firebaseApp.database().ref('artistSongs');
   }
 
+  // utility converts firebase array to 'real' array
+  toArray(obj) {
+    var arr = [];
+    if (!obj) return arr;
+    for (var property in obj) {
+      if (obj.hasOwnProperty(property)) {
+        arr.push({ title: obj[property], key: property })
+      }
+    }
+    console.log('arr:', arr);
+    return arr;
+  }
+
   // (5) when data changes, get a snapshot
   listenForItems(itemsRef) {
 
@@ -79,7 +92,7 @@ export default class GroceryApp extends Component {
 
         items.push({
           name: child.key,
-          songs: songs,
+          songs: this.toArray(songs),
           _key: child.key
         });
       });
@@ -134,7 +147,15 @@ export default class GroceryApp extends Component {
   _renderItem(item) {
     // what to do when we press an item
     const onPress = () => {
-      AlertIOS.prompt('Complete',
+      /*AlertIOS.prompt('Complete',
+        null,
+        [{ text: 'Complete', onPress: (text) => this.itemsRef.child(item._key).remove() },
+        { text: 'Cancel', onPress: (text) => console.log('Cancel') }],
+        'default');*/
+    }
+
+    const onSongPress = () => {
+      AlertIOS.prompt('Complete Song',
         null,
         [{ text: 'Complete', onPress: (text) => this.itemsRef.child(item._key).remove() },
         { text: 'Cancel', onPress: (text) => console.log('Cancel') }],
@@ -143,7 +164,7 @@ export default class GroceryApp extends Component {
 
     //
     return (
-      <ListItem item={item} onPress={onPress} />
+      <ListItem item={item} onPress={onPress} onSongPress={onSongPress} />
     )
   }
   // main render function
