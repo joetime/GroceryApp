@@ -20,10 +20,13 @@ import {
 const StatusBar = require('./components/StatusBar');
 const ActionButton = require('./components/ActionButton');
 const ListItem = require('./components/ListItem');
+const ListSubItem = require('./components/ListSubItem');
 
 // import styles
 const styles = require('./styles.js');
 
+// for offline storage
+const STORAGE_KEY = '@kbook:key';
 
 // (1) import firebase
 import * as firebase from 'firebase';
@@ -64,11 +67,13 @@ export default class GroceryApp extends Component {
 
   // utility converts firebase array to 'real' array
   toArray(obj) {
+    //return obj;
     var arr = [];
     if (!obj) return arr;
     for (var property in obj) {
+
       if (obj.hasOwnProperty(property)) {
-        arr.push({ title: obj[property], key: property })
+        arr.push({ title: obj[property], _key: property })
       }
     }
     console.log('arr:', arr);
@@ -78,6 +83,10 @@ export default class GroceryApp extends Component {
   // (5) when data changes, get a snapshot
   listenForItems(itemsRef) {
 
+    // AsyncStorage.getItem(STORAGE_KEY, (err, res) => {
+    //   console.log('data retrieved:', res);
+    // })
+
     itemsRef.on('value', (snap) => {
 
       // get children as an array
@@ -86,27 +95,29 @@ export default class GroceryApp extends Component {
 
         console.log('snap.child.val()', child.val())
 
-        var songs = child.val();
+        var songs = this.toArray(child.val());
 
         console.log('songs', songs);
+        //songs = this.state.dataSource.cloneWithRows([]);
 
         items.push({
           name: child.key,
-          songs: this.toArray(songs),
+          songs: songs, //this.toArray(songs),
           _key: child.key
         });
       });
+      console.log('items raw', items);
 
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(items)
       });
 
-      var d = JSON.stringify(items);
-      console.log('items', d);
+      //var d = JSON.stringify(items);
+      //console.log('items', d);
 
-      AsyncStorage.setItem('@data', d, () => {
-        console.log('@data stored', d);
-      });
+      // AsyncStorage.setItem(STORAGE_KEY, items, (err) => {
+      //   //console.log('@data stored', err);
+      // });
 
 
     });
@@ -172,10 +183,10 @@ export default class GroceryApp extends Component {
     return (
       <View style={styles.container}>
         <StatusBar title="Kbook" />
-
-        <ListView dataSource={this.state.dataSource}
-          renderRow={this._renderItem.bind(this)} style={styles.listview} />
-
+        <View style={{ flexDirection: 'row', flex: 2 }}>
+          <ListView dataSource={this.state.dataSource}
+            renderRow={this._renderItem.bind(this)} style={styles.listview} />
+        </View>
         <ActionButton title="Add" onPress={this._addItem.bind(this)} />
         <ActionButton title="Test Storage" onPress={this._testStorage.bind(this)} />
       </View>

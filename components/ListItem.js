@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
 const styles = require('../styles.js')
-const { View, TouchableHighlight, Text, FlatList } = ReactNative;
+const { View, TouchableHighlight, Text, FlatList, ListView } = ReactNative;
 
 class ListItem extends Component {
-    /*_renderItemComponent = ({ item }) => {
-        return (
-            <ItemComponent
-                item={item}
-                horizontal={this.state.horizontal}
-                fixedHeight={this.state.fixedHeight}
-                onPress={this._pressItem}
-            />
-        );
-    };*/
+
+    // constructor
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2
+            })
+        }
+        //this.itemsRef = firebaseApp.database().ref('artistSongs');
+        this.s = this.state.dataSource.cloneWithRows(this.props.item.songs);
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@asdfasdf', this.s);
+    }
 
     render() {
         return (
             <TouchableHighlight onPress={this.props.onPress}>
                 <View style={styles.li}>
-                    <Text style={styles.liText}>{this.props.item.name}</Text>
+                    <Text style={styles.liText}>{this.props.item.name} ({this.props.item.songs.length})</Text>
                     {/*<Text style={styles.liText}>{this.props.item.songs.length}</Text>*/}
-                    <FlatList
-                        data={this.props.item.songs}
-                        renderItem={({ item }) => <Text onPress={this.props.onSongPress}>{item.title}</Text>}
-
-                    />
+                    <View>
+                        <ListView dataSource={this.s}
+                            renderRow={(rowData) => <Text>{rowData.title}</Text>} />
+                    </View>
                 </View>
             </TouchableHighlight>
         );
