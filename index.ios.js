@@ -59,7 +59,7 @@ export default class GroceryApp extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2
       })
     }
-    this.itemsRef = firebaseApp.database().ref('artists');
+    this.itemsRef = firebaseApp.database().ref('artistSongs');
   }
 
   // (5) when data changes, get a snapshot
@@ -73,9 +73,13 @@ export default class GroceryApp extends Component {
 
         console.log('snap.child.val()', child.val())
 
+        var songs = child.val();
+
+        console.log('songs', songs);
+
         items.push({
-          name: child.val(),
-          //songs: child.val().songs,
+          name: child.key,
+          songs: songs,
           _key: child.key
         });
       });
@@ -146,7 +150,7 @@ export default class GroceryApp extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar title="Grocery List" />
+        <StatusBar title="Kbook" />
 
         <ListView dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)} style={styles.listview} />

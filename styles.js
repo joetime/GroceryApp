@@ -20,6 +20,10 @@ var styles = StyleSheet.create({
         paddingLeft: 16,
         paddingTop: 14,
         paddingBottom: 16,
+        flex: 2
+    },
+    liFlex1: {
+        flex: 2
     },
     liContainer: {
         flex: 2,
@@ -27,6 +31,7 @@ var styles = StyleSheet.create({
     liText: {
         color: '#333',
         fontSize: 16,
+        flex: 1
     },
     navbar: {
         alignItems: 'center',
